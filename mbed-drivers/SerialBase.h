@@ -31,6 +31,8 @@
 #include "dma_api.h"
 #endif
 
+#define UART_TRANS_WORD_WIDTH    0x08
+
 namespace mbed {
 
 /** A base class for serial port implementations
