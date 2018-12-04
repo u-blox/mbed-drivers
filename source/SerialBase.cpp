@@ -169,7 +169,7 @@ int SerialBase::read(const Buffer& buffer, const event_callback_t& callback, int
     if (serial_rx_active(&_serial)) {
         return -1; // transaction ongoing
     }
-    start_read(buffer, 0, callback, event, char_match);
+    start_read(buffer, UART_TRANS_WORD_WIDTH, callback, event, char_match);
     return 0;
 }
 
@@ -180,7 +180,7 @@ void SerialBase::start_read(const Buffer& buffer, char buffer_width, const event
     _current_rx_transaction.callback = callback;
     _current_rx_transaction.buffer = buffer;
     _thunk_irq.callback(&SerialBase::interrupt_handler_asynch);
-    serial_rx_asynch(&_serial, buffer.buf, buffer.length, 0, _thunk_irq.entry(), event, char_match, _rx_usage);
+    serial_rx_asynch(&_serial, buffer.buf, buffer.length, buffer_width, _thunk_irq.entry(), event, char_match, _rx_usage);
 }
 
 void SerialBase::interrupt_handler_asynch(void)
